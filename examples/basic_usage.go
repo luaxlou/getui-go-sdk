@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/getui/getui-go-sdk"
+	"github.com/luaxlou/getui-go-sdk"
 )
 
 func main() {

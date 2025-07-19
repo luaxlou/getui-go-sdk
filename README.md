@@ -22,7 +22,7 @@
 ## 安装
 
 ```bash
-go get github.com/getui/getui-go-sdk
+go get github.com/luaxlou/getui-go-sdk
 ```
 
 ## 快速开始
@@ -34,7 +34,7 @@ package main
 
 import (
     "log"
-    "github.com/getui/getui-go-sdk"
+    "github.com/luaxlou/getui-go-sdk"
 )
 
 func main() {
