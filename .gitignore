@@ -1,0 +1,49 @@
+# 个推Go SDK .gitignore
+
+# 环境变量配置文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+
+# 构建产物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+basic_usage
+env_test
+
+# 测试覆盖率文件
+*.out
+*.html
+coverage.out
+coverage.html
+
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Go相关
+*.test
+*.prof
+go.work
+
+# 日志文件
+*.log
+
+# 临时文件
+tmp/
+temp/ 
