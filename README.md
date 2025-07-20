@@ -206,6 +206,78 @@ if !result.IsSuccess() {
 log.Printf("推送成功: %+v", result.Data)
 ```
 
+## 测试
+
+### 环境变量配置
+
+为了运行测试，您需要设置以下环境变量。我们提供了便捷的脚本来自动设置：
+
+#### 使用脚本设置（推荐）
+
+**Linux/macOS:**
+```bash
+# 首次设置
+source scripts/setup_env.sh
+
+# 后续加载
+source scripts/load_env.sh
+```
+
+**Windows:**
+```cmd
+# 首次设置
+scripts\setup_env.bat
+
+# 后续加载
+scripts\load_env.bat
+```
+
+#### 使用.env文件（推荐）
+
+创建 `.env` 文件（参考 `env.example`）：
+
+```bash
+cp env.example .env
+# 编辑 .env 文件，填入实际的测试配置
+```
+
+#### 手动设置环境变量
+
+```bash
+# 设置测试环境变量
+export GETUI_TEST_APP_ID="your_test_app_id"
+export GETUI_TEST_APP_KEY="your_test_app_key"
+export GETUI_TEST_MASTER_SECRET="your_test_master_secret"
+```
+
+#### 脚本功能特性
+
+- 🔧 **交互式配置**: 引导式输入个推配置信息
+- ✅ **自动验证**: 确保输入不为空
+- 💾 **配置保存**: 可选择保存到.env文件
+- 🔄 **重复使用**: 支持重新加载已保存的配置
+- 🛡️ **安全保护**: .env文件已添加到.gitignore中
+
+#### .env文件特性
+
+- 📁 **自动加载**: 测试文件自动从.env文件读取配置
+- 🔒 **安全存储**: 敏感配置信息本地化存储
+- 📝 **格式支持**: 支持注释、空行、引号等格式
+- 🛡️ **容错处理**: 文件不存在时自动使用默认配置
+
+### 运行测试
+
+```bash
+# 运行所有测试
+go test -v
+
+# 运行特定测试
+go test -v -run TestNewClient
+
+# 运行测试并显示覆盖率
+go test -v -cover
+```
+
 ## 许可证
 
 MIT License

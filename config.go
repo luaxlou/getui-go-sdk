@@ -1,8 +1,12 @@
 package getui
 
 import (
+	"bufio"
 	"crypto/tls"
+	"fmt"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -115,4 +119,66 @@ func (c *Config) GetCustomSocketTimeout(uri string) int {
 		return timeout
 	}
 	return c.SocketTimeout
+}
+
+// LoadConfigFromEnvFile 从.env文件加载配置
+func LoadConfigFromEnvFile(filename string) (*Config, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("无法打开.env文件: %v", err)
+	}
+	defer file.Close()
+
+	config := NewDefaultConfig()
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+
+		// 跳过空行和注释行
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		// 解析KEY=VALUE格式
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
+
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+
+		// 移除值两端的引号
+		if len(value) >= 2 && (value[0] == '"' && value[len(value)-1] == '"') {
+			value = value[1 : len(value)-1]
+		}
+
+		switch key {
+		case "GETUI_TEST_APP_ID":
+			config.AppID = value
+		case "GETUI_TEST_APP_KEY":
+			config.AppKey = value
+		case "GETUI_TEST_MASTER_SECRET":
+			config.MasterSecret = value
+		case "GETUI_TEST_DOMAIN":
+			config.Domain = value
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("读取.env文件时出错: %v", err)
+	}
+
+	return config, nil
+}
+
+// LoadConfigFromEnvFileOrDefault 从.env文件加载配置，如果文件不存在则返回默认配置
+func LoadConfigFromEnvFileOrDefault(filename string) *Config {
+	config, err := LoadConfigFromEnvFile(filename)
+	if err != nil {
+		// 如果文件不存在或读取失败，返回默认配置
+		return NewDefaultConfig()
+	}
+	return config
 }

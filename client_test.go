@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
+// 从.env文件获取测试配置
+func getTestConfig() *Config {
+	return LoadConfigFromEnvFileOrDefault(".env")
+}
+
 func TestNewClient(t *testing.T) {
 	// 测试创建客户端
-	config := &Config{
-		AppID:        "test_app_id",
-		AppKey:       "test_app_key",
-		MasterSecret: "test_master_secret",
-		Domain:       "https://restapi.getui.com/v2",
-	}
+	config := getTestConfig()
 
 	client := NewClient(config)
 	if client == nil {
@@ -120,12 +120,7 @@ func TestConfigValidate(t *testing.T) {
 }
 
 func TestGenerateRequestID(t *testing.T) {
-	config := &Config{
-		AppID:        "test_app_id",
-		AppKey:       "test_app_key",
-		MasterSecret: "test_master_secret",
-		Domain:       "https://restapi.getui.com/v2",
-	}
+	config := getTestConfig()
 	client := NewClient(config)
 
 	requestID1 := client.GenerateRequestID()
